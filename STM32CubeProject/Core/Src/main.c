@@ -19,6 +19,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -94,6 +96,26 @@ int main(void)
   MX_USART3_UART_Init();
   MX_SDMMC1_SD_Init();
   /* USER CODE BEGIN 2 */
+
+  /*
+   * 	UART BUFFER
+   * */
+
+  char buffer[400];
+
+
+  //HAL_SD_CardStatusTypeDef sdcard_status;
+  HAL_SD_CardInfoTypeDef sdcard_info;
+
+
+
+
+
+  HAL_SD_GetCardInfo(&hsd1, &sdcard_info);
+
+  //int ndata = snprintf(buffer,200,"Card_Type: %d - DataBus Width: %d\n",sd1_status.CardType,sd1_status.DataBusWidth);
+  int ndata = snprintf(buffer,400,"CardType: %lu\nCardVersion: %lu\nClass: %lu\nRelCardAdd: %lu\nBlockNbr: %lu\nBlockSize: %lu\nLogBlockNbr: %lu\nLogBlockSize: %lu\n",sdcard_info.CardType,sdcard_info.CardVersion,sdcard_info.Class,sdcard_info.RelCardAdd,sdcard_info.BlockNbr,sdcard_info.BlockSize,sdcard_info.LogBlockNbr,sdcard_info.LogBlockSize);
+  HAL_UART_Transmit(&huart3, buffer,ndata,100);
 
   /* USER CODE END 2 */
 
